@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# But NOT these:
+!.gitignore
+!scripts/
+!scripts/**
+
+# Common ignores
+__pycache__/
+data/sf_incident_data.csv
