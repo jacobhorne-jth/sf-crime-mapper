@@ -3,6 +3,7 @@ cat > .gitignore << 'EOF'
 .venv/
 __pycache__/
 *.pyc
+*.csv
 # Node
 frontend/node_modules/
 frontend/dist/
