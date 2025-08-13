@@ -12,3 +12,4 @@ frontend/dist/
 .env
 frontend/.env
 EOF
+backend/app/data/raw/*.csv
