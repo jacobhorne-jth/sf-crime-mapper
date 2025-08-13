@@ -3,64 +3,110 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, timedelta, datetime
 from pathlib import Path
-import json, math
+import json
 import numpy as np
 import pandas as pd
-from xgboost import XGBClassifier
+from typing import Dict, Optional
 
 APP_DIR = Path(__file__).parent
 MODELS_DIR = APP_DIR / "models" / "xgb_spike"
 COUNTS = APP_DIR / "data" / "processed" / "counts_weekly.csv"
 
-@dataclass
-class SpikeInfo:
-    model: XGBClassifier
-    last_week: date
+# ---------- utilities ----------
 
 def week_monday(d: date) -> date:
+    """Return the Monday for the week containing date d."""
     return d - timedelta(days=d.weekday())
 
-def _load_meta():
+def _load_meta() -> Optional[dict]:
     p = MODELS_DIR / "meta.json"
-    if not p.exists(): return None
+    if not p.exists():
+        return None
     return json.loads(p.read_text())
 
-META = _load_meta()
-SPIKE_MODELS: dict[str, SpikeInfo] = {}
+META: Optional[dict] = _load_meta()
 
-def _load_models():
-    if not META: return
+# ---------- model container ----------
+
+@dataclass
+class SpikeInfo:
+    model: object          # XGBClassifier, but typed as object to avoid hard import
+    last_week: date
+
+SPIKE_MODELS: Dict[str, SpikeInfo] = {}
+_LOADED = False  # ensures we attempt to load only once
+
+def _ensure_loaded() -> None:
+    """
+    Load all neighborhood XGB models on first use.
+    Never raise if xgboost/scikit-learn isn't available or files are missing.
+    """
+    global _LOADED
+    if _LOADED:
+        return
+    _LOADED = True
+
+    if not META:
+        return
+
+    # Try importing lazily so a missing sklearn/xgboost doesn't crash module import
+    try:
+        from xgboost import XGBClassifier
+    except Exception:
+        # No xgboost (or its sklearn dependency) – keep models unavailable
+        return
+
     for p in MODELS_DIR.glob("*.json"):
-        if p.name == "meta.json": continue
+        if p.name == "meta.json":
+            continue
         nid = p.stem
-        if nid not in META["neighborhoods"]: continue
-        m = XGBClassifier()
-        m.load_model(str(p))
-        info = META["neighborhoods"][nid]
-        SPIKE_MODELS[nid] = SpikeInfo(
-            model=m,
-            last_week=datetime.fromisoformat(info["last_week"]).date()
-        )
+        # Keep only neighborhoods listed in meta
+        if "neighborhoods" in META and nid not in META["neighborhoods"]:
+            continue
+        try:
+            m = XGBClassifier()
+            m.load_model(str(p))  # expects models saved via XGBClassifier.save_model(...)
+            info = META["neighborhoods"][nid]
+            SPIKE_MODELS[nid] = SpikeInfo(
+                model=m,
+                last_week=datetime.fromisoformat(info["last_week"]).date(),
+            )
+        except Exception:
+            # If a single neighborhood model fails to load, skip it—others still work
+            continue
 
-_load_models()
+# ---------- feature builder ----------
 
-def _feature_row(hist: pd.DataFrame, target_week: date, feats: list[str], n_lags: int) -> np.ndarray | None:
-    """Build features for 'target_week' using ONLY data before it."""
-    if hist.empty: return None
+def _feature_row(
+    hist: pd.DataFrame,
+    target_week: date,
+    feats: list[str],
+    n_lags: int,
+) -> Optional[np.ndarray]:
+    """Build features for target_week using ONLY data prior to target_week."""
+    if hist.empty:
+        return None
+
     h = hist.sort_values("week_start").copy()
-    # keep only rows BEFORE target
-    h = h[h["week_start"] < pd.Timestamp(target_week)]
+    h = h[h["week_start"] < pd.Timestamp(target_week)]  # strictly before target
     y = h["count"].astype(float).values
-    if len(y) < max(n_lags, 8): return None
+    if len(y) < max(n_lags, 8):
+        return None
 
+    # Lags
     lags = [y[-k] for k in range(1, n_lags + 1)]
+
+    # Rolling means
     ma4 = float(pd.Series(y).rolling(4).mean().iloc[-1])
     ma8 = float(pd.Series(y).rolling(8).mean().iloc[-1])
 
+    # Seasonality (weekly)
     wk = pd.Timestamp(target_week).isocalendar().week
     sin52 = float(np.sin(2 * np.pi * wk / 52.0))
     cos52 = float(np.cos(2 * np.pi * wk / 52.0))
-    trend = float(len(y) + 1)  # step index
+
+    # Simple trend proxy
+    trend = float(len(y) + 1)
 
     vec = {}
     for i, v in enumerate(lags, start=1):
@@ -69,22 +115,39 @@ def _feature_row(hist: pd.DataFrame, target_week: date, feats: list[str], n_lags
 
     return np.array([vec[f] for f in feats], dtype=float)
 
+# ---------- API surface ----------
+
 def spike_for_request(target_day: date) -> dict:
-    """Return spike probabilities for the requested week. If the request is beyond next week,
-    we serve the closest supported week (past weeks and next week are supported)."""
+    """
+    Return spike probabilities for the requested week.
+    If request is beyond next observed week, clamp to next_week.
+    Response:
+      {
+        "served_week": "YYYY-MM-DD" | null,
+        "predictions": [
+          {"neighborhood_id": "...", "prob": 0.1234, "risk": 12.3},
+          ...
+        ],
+        "available": true|false
+      }
+    """
+    _ensure_loaded()
+
+    # models or meta missing → safe, empty response
     if not META or not SPIKE_MODELS or not COUNTS.exists():
-        return {"served_week": None, "predictions": []}
+        return {"served_week": None, "predictions": [], "available": False}
 
     wk = week_monday(target_day)
-    feats = META["features"]; n_lags = int(META["n_lags"])
+    feats = META["features"]
+    n_lags = int(META["n_lags"])
 
     df = pd.read_csv(COUNTS, parse_dates=["week_start"])
-    base = df[(df["crime_type"]=="all") & (df["time_of_day"]=="all")][["neighborhood_id","week_start","count"]].copy()
+    base = df[
+        (df["crime_type"] == "all") & (df["time_of_day"] == "all")
+    ][["neighborhood_id", "week_start", "count"]].copy()
 
-    # determine a universally supported week: min(max(requested, min+lags), max+7)
     last_obs = base["week_start"].max().date()
     next_week = last_obs + timedelta(days=7)
-    # we support any past week (where features can be built) and next_week. Beyond that => clamp to next_week
     served = wk if wk <= next_week else next_week
 
     out = []
@@ -93,8 +156,14 @@ def spike_for_request(target_day: date) -> dict:
         row = _feature_row(hist, served, feats, n_lags)
         if row is None:
             continue
-        prob = float(info.model.predict_proba(row.reshape(1, -1))[0, 1])
+        try:
+            # XGBClassifier.predict_proba returns [ [p0, p1] ]
+            prob = float(info.model.predict_proba(row.reshape(1, -1))[0, 1])
+        except Exception:
+            continue
         risk = round(100.0 * max(0.0, min(1.0, prob)), 1)
-        out.append({"neighborhood_id": nid, "prob": round(prob, 4), "risk": risk})
+        out.append(
+            {"neighborhood_id": nid, "prob": round(prob, 4), "risk": risk}
+        )
 
-    return {"served_week": served.isoformat(), "predictions": out}
+    return {"served_week": served.isoformat(), "predictions": out, "available": True}
