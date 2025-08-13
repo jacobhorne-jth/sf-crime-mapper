@@ -218,6 +218,7 @@ Endpoint: `GET /api/spike?date=YYYY-MM-DD` → `{ served_week, predictions:[{ ne
 
 **Example**
 
+![SF Crime Mapper Preview](images/JacobHorneCrimeMap.png)
 
 ---
 
