@@ -1,0 +1,114 @@
+{
+  "features": [
+    "lag1",
+    "lag2",
+    "lag3",
+    "lag4",
+    "lag5",
+    "lag6",
+    "lag7",
+    "lag8",
+    "ma4",
+    "ma8",
+    "sin52",
+    "cos52",
+    "trend"
+  ],
+  "n_lags": 8,
+  "spike_k": 1.0,
+  "neighborhoods": {
+    "Bernal Heights": {
+      "last_week": "2025-08-05"
+    },
+    "Chinatown": {
+      "last_week": "2025-08-05"
+    },
+    "Excelsior": {
+      "last_week": "2025-08-05"
+    },
+    "Glen Park": {
+      "last_week": "2025-08-05"
+    },
+    "Golden Gate Park": {
+      "last_week": "2025-08-05"
+    },
+    "Haight Ashbury": {
+      "last_week": "2025-08-05"
+    },
+    "Hayes Valley": {
+      "last_week": "2025-08-05"
+    },
+    "Inner Richmond": {
+      "last_week": "2025-08-05"
+    },
+    "Inner Sunset": {
+      "last_week": "2025-08-05"
+    },
+    "Japantown": {
+      "last_week": "2025-08-05"
+    },
+    "Lakeshore": {
+      "last_week": "2025-08-05"
+    },
+    "Marina": {
+      "last_week": "2025-08-05"
+    },
+    "McLaren Park": {
+      "last_week": "2025-07-29"
+    },
+    "Mission": {
+      "last_week": "2025-08-05"
+    },
+    "Mission Bay": {
+      "last_week": "2025-08-05"
+    },
+    "Nob Hill": {
+      "last_week": "2025-08-05"
+    },
+    "Noe Valley": {
+      "last_week": "2025-08-05"
+    },
+    "North Beach": {
+      "last_week": "2025-08-05"
+    },
+    "Outer Mission": {
+      "last_week": "2025-08-05"
+    },
+    "Outer Richmond": {
+      "last_week": "2025-08-05"
+    },
+    "Pacific Heights": {
+      "last_week": "2025-08-05"
+    },
+    "Portola": {
+      "last_week": "2025-08-05"
+    },
+    "Potrero Hill": {
+      "last_week": "2025-08-05"
+    },
+    "Presidio Heights": {
+      "last_week": "2025-08-05"
+    },
+    "Russian Hill": {
+      "last_week": "2025-08-05"
+    },
+    "Seacliff": {
+      "last_week": "2025-08-05"
+    },
+    "South of Market": {
+      "last_week": "2025-08-05"
+    },
+    "Tenderloin": {
+      "last_week": "2025-08-05"
+    },
+    "Treasure Island": {
+      "last_week": "2025-08-05"
+    },
+    "Visitacion Valley": {
+      "last_week": "2025-08-05"
+    },
+    "Western Addition": {
+      "last_week": "2025-08-05"
+    }
+  }
+}

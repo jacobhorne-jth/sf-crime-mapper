@@ -1,0 +1,45 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "Mission",
+        "properties": { "neighborhood": "Mission" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-122.423, 37.758], [-122.407, 37.758],
+            [-122.407, 37.767], [-122.423, 37.767],
+            [-122.423, 37.758]
+          ]]
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "SoMa",
+        "properties": { "neighborhood": "SoMa" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-122.411, 37.776], [-122.398, 37.776],
+            [-122.398, 37.786], [-122.411, 37.786],
+            [-122.411, 37.776]
+          ]]
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "Sunset",
+        "properties": { "neighborhood": "Sunset" },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [[
+            [-122.495, 37.744], [-122.475, 37.744],
+            [-122.475, 37.759], [-122.495, 37.759],
+            [-122.495, 37.744]
+          ]]
+        }
+      }
+    ]
+  }
+  

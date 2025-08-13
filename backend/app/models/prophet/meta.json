@@ -1,0 +1,159 @@
+{
+  "neighborhoods": {
+    "Bernal Heights": {
+      "last_week": "2025-08-05",
+      "y_min": 9.0,
+      "y_max": 60.0
+    },
+    "Chinatown": {
+      "last_week": "2025-08-05",
+      "y_min": 8.0,
+      "y_max": 57.0
+    },
+    "Excelsior": {
+      "last_week": "2025-08-05",
+      "y_min": 9.0,
+      "y_max": 53.0
+    },
+    "Glen Park": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 18.0
+    },
+    "Golden Gate Park": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 83.0
+    },
+    "Haight Ashbury": {
+      "last_week": "2025-08-05",
+      "y_min": 5.0,
+      "y_max": 48.0
+    },
+    "Hayes Valley": {
+      "last_week": "2025-08-05",
+      "y_min": 11.0,
+      "y_max": 70.0
+    },
+    "Inner Richmond": {
+      "last_week": "2025-08-05",
+      "y_min": 3.0,
+      "y_max": 34.0
+    },
+    "Inner Sunset": {
+      "last_week": "2025-08-05",
+      "y_min": 2.0,
+      "y_max": 37.0
+    },
+    "Japantown": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 23.0
+    },
+    "Lakeshore": {
+      "last_week": "2025-08-05",
+      "y_min": 4.0,
+      "y_max": 43.0
+    },
+    "Marina": {
+      "last_week": "2025-08-05",
+      "y_min": 8.0,
+      "y_max": 70.0
+    },
+    "McLaren Park": {
+      "last_week": "2025-07-29",
+      "y_min": 1.0,
+      "y_max": 9.0
+    },
+    "Mission": {
+      "last_week": "2025-08-05",
+      "y_min": 94.0,
+      "y_max": 255.0
+    },
+    "Mission Bay": {
+      "last_week": "2025-08-05",
+      "y_min": 9.0,
+      "y_max": 50.0
+    },
+    "Nob Hill": {
+      "last_week": "2025-08-05",
+      "y_min": 8.0,
+      "y_max": 69.0
+    },
+    "Noe Valley": {
+      "last_week": "2025-08-05",
+      "y_min": 3.0,
+      "y_max": 38.0
+    },
+    "North Beach": {
+      "last_week": "2025-08-05",
+      "y_min": 10.0,
+      "y_max": 91.0
+    },
+    "Outer Mission": {
+      "last_week": "2025-08-05",
+      "y_min": 8.0,
+      "y_max": 43.0
+    },
+    "Outer Richmond": {
+      "last_week": "2025-08-05",
+      "y_min": 7.0,
+      "y_max": 53.0
+    },
+    "Pacific Heights": {
+      "last_week": "2025-08-05",
+      "y_min": 6.0,
+      "y_max": 42.0
+    },
+    "Portola": {
+      "last_week": "2025-08-05",
+      "y_min": 3.0,
+      "y_max": 33.0
+    },
+    "Potrero Hill": {
+      "last_week": "2025-08-05",
+      "y_min": 4.0,
+      "y_max": 42.0
+    },
+    "Presidio Heights": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 25.0
+    },
+    "Russian Hill": {
+      "last_week": "2025-08-05",
+      "y_min": 3.0,
+      "y_max": 65.0
+    },
+    "Seacliff": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 9.0
+    },
+    "South of Market": {
+      "last_week": "2025-08-05",
+      "y_min": 67.0,
+      "y_max": 222.0
+    },
+    "Tenderloin": {
+      "last_week": "2025-08-05",
+      "y_min": 95.0,
+      "y_max": 277.0
+    },
+    "Treasure Island": {
+      "last_week": "2025-08-05",
+      "y_min": 1.0,
+      "y_max": 18.0
+    },
+    "Visitacion Valley": {
+      "last_week": "2025-08-05",
+      "y_min": 3.0,
+      "y_max": 33.0
+    },
+    "Western Addition": {
+      "last_week": "2025-08-05",
+      "y_min": 25.0,
+      "y_max": 81.0
+    }
+  }
+}
