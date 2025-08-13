@@ -8,8 +8,8 @@ A full-stack interactive web app that forecasts San Francisco neighborhood-level
 _Note on Loading Time_
 ```text
 Because the web app is hosted on a free render service, it automatically goes to sleep after periods of
-inactivity. If you visit the app after it has been idle, the first request can take up to 30 seconds to
-respond while the server wakes up. Subsequent requests will be much faster.
+inactivity. If you visit the app after it has been idle, the first request can take up to 60 seconds to
+respond while the server wakes up. Subsequent requests should be much faster. Please be patient.
 ```
 
 Frontend: https://sf-crime-mapper-frontend.netlify.app/
