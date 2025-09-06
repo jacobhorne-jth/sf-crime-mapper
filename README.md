@@ -16,6 +16,8 @@ Frontend: https://sf-crime-mapper-frontend.netlify.app/
 
 Backend: https://sf-crime-mapper-api.onrender.com
 
+**Note:** This project was completed `Mar - Apr 2025`; the code was developed locally and pushed in one batch to GitHub (not committed sequentially during development).
+
 ---
 
 **Features**
